@@ -26,6 +26,12 @@ public class WeatherEvent {
 		return (this.startMonth + "/" + this.startDay + "/" + this.year + " - " + 
 			this.endMonth + "/" + this.endDay + "/" + this.year);
 	}
+	public String getLocation(){
+		return(this.city);
+	}
+	public String getState(){
+		return(this.state);
+	}
 	public int compareDate(WeatherEvent other){
 		if(other.startMonth == this.startMonth){
 			if(other.startDay == this.startDay){//same date
