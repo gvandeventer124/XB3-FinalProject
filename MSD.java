@@ -1,6 +1,5 @@
 package sortingForFinalProject;
 
-
 /**
  *  The <tt>MSD</tt> class provides static methods for sorting an
  *  array of extended ASCII strings or integers using MSD radix sort.
@@ -11,47 +10,36 @@ package sortingForFinalProject;
  *
  *  @author Robert Sedgewick
  *  @author Kevin Wayne
- */
-
-
-
+ **/
 public class MSD {
-	
-	
-	
     private static final int BITS_PER_BYTE =   8;
     private static final int BITS_PER_INT  =  32;   // each Java int is 32 bits 
     private static final int R             = 256;   // extended ASCII alphabet size
     private static final int CUTOFF        =  15;   // cutoff to insertion sort
-    private WeatherEvent[] b;
-    
-    public MSD() { } 
+
+    // do not instantiate
+    private MSD() { } 
 
    /**
      * Rearranges the array of extended ASCII strings in ascending order.
      *
      * @param a the array to be sorted
      */
-    public MSD( WeatherEvent[] b){
-    	this.b = b;
-    }
-    public WeatherEvent[] sort(String[] a) {
+    public static void sort(WeatherEvent[] a) {
         int N = a.length;
-       
-        String[] aux = new String[N];
+        WeatherEvent[] aux = new WeatherEvent[N];
         sort(a, 0, N-1, 0, aux);
-        return b;
     }
 
     // return dth character of s, -1 if d = length of string
-    private static int charAt(String s, int d) {
-        assert d >= 0 && d <= s.length();
-        if (d == s.length()) return -1;
-        return s.charAt(d);
+    private static int charAt(WeatherEvent s, int d) {
+        assert d >= 0 && d <= s.getCounty().length();
+        if (d == s.getCounty().length()) return -1;
+        return s.getCounty().charAt(d);
     }
 
     // sort from a[lo] to a[hi], starting at the dth character
-    private static void sort(String[] a, int lo, int hi, int d, String[] aux) {
+    private static void sort(WeatherEvent[] a, int lo, int hi, int d, WeatherEvent[] aux) {
 
         // cutoff to insertion sort for small subarrays
         if (hi <= lo + CUTOFF) {
@@ -88,40 +76,44 @@ public class MSD {
 
 
     // insertion sort a[lo..hi], starting at dth character
-    private static void insertion(String[] a, int lo, int hi, int d) {
+    private static void insertion(WeatherEvent[] a, int lo, int hi, int d) {
         for (int i = lo; i <= hi; i++)
             for (int j = i; j > lo && less(a[j], a[j-1], d); j--)
                 exch(a, j, j-1);
     }
 
     // exchange a[i] and a[j]
-    private static void exch(String[] a, int i, int j) {
-        String temp = a[i];
+    private static void exch(WeatherEvent[] a, int i, int j) {
+        WeatherEvent temp = a[i];
         a[i] = a[j];
         a[j] = temp;
-        
     }
 
     // is v less than w, starting at character d
-    private static boolean less(String v, String w, int d) {
+    private static boolean less(WeatherEvent v, WeatherEvent w, int d) {
         // assert v.substring(0, d).equals(w.substring(0, d));
-        for (int i = d; i < Math.min(v.length(), w.length()); i++) {
-            if (v.charAt(i) < w.charAt(i)) return true;
-            if (v.charAt(i) > w.charAt(i)) return false;
+        for (int i = d; i < Math.min(v.getCounty().length(), w.getCounty().length()); i++) {
+            if (v.getCounty().charAt(i) < w.getCounty().charAt(i)) return true;
+            if (v.getCounty().charAt(i) > w.getCounty().charAt(i)) return false;
         }
-        return v.length() < w.length();
+        return v.getCounty().length() < w.getCounty().length();
     }
 
 
-   
-    public void sort(int[] a) {
+   /**
+     * Rearranges the array of 32-bit integers in ascending order.
+     * Currently assumes that the integers are nonnegative.
+     *
+     * @param a the array to be sorted
+     */
+    public static void sort(int[] a) {
         int N = a.length;
         int[] aux = new int[N];
         sort(a, 0, N-1, 0, aux);
     }
 
     // MSD sort from a[lo] to a[hi], starting at the dth byte
-    private void sort(int[] a, int lo, int hi, int d, int[] aux) {
+    private static void sort(int[] a, int lo, int hi, int d, int[] aux) {
 
         // cutoff to insertion sort for small subarrays
         if (hi <= lo + CUTOFF) {
@@ -142,7 +134,18 @@ public class MSD {
         for (int r = 0; r < R; r++)
             count[r+1] += count[r];
 
-
+/************* BUGGGY CODE.
+        // for most significant byte, 0x80-0xFF comes before 0x00-0x7F
+        if (d == 0) {
+            int shift1 = count[R] - count[R/2];
+            int shift2 = count[R/2];
+            for (int r = 0; r < R/2; r++)
+                count[r] += shift1;
+            for (int r = R/2; r < R; r++)
+                count[r] -= shift2;
+        }
+************************************/
+        // distribute
         for (int i = lo; i <= hi; i++) {
             int c = (a[i] >> shift) & mask;
             aux[count[c]++] = a[i];
@@ -164,26 +167,18 @@ public class MSD {
     }
 
     // insertion sort a[lo..hi], starting at dth character
-    private void insertion(int[] a, int lo, int hi, int d) {
+    private static void insertion(int[] a, int lo, int hi, int d) {
         for (int i = lo; i <= hi; i++)
             for (int j = i; j > lo && a[j] < a[j-1]; j--)
                 exch(a, j, j-1);
     }
 
     // exchange a[i] and a[j]
-    private void exch(int[] a, int i, int j) {
+    private static void exch(int[] a, int i, int j) {
         int temp = a[i];
         a[i] = a[j];
         a[j] = temp;
-        
-        WeatherEvent tmp = b[i];
-        b[i] = b[j];
-        b[j] = tmp;
     }
 
 
-  
 }
-
-
-
