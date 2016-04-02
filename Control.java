@@ -1,22 +1,14 @@
 package sortingForFinalProject;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 public class Control {
 
 	static WeatherEvent[] year06, year07, year08, year09, year10, year11, year12, 
 	year13, year14, year15;
 	
-	static String[] county06 = new String[56400];
-	static String[] county07 = new String[59010];
-	static String[] county08 = new String[71189];
-	static String[] county09 = new String[57398];
-	static String[] county10 = new String[62804];
-	static String[] county11 = new String[79091];
-	static String[] county12 = new String[64503];
-	static String[] county13 = new String[59983];
-	static String[] county14 = new String[59315];
-	static String[] county15 = new String[52955];
+	static WeatherEvent[] year = new WeatherEvent[622648];
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -26,8 +18,8 @@ public class Control {
 		//UserInputCity();
 		//SortByDate();
 		sortLocation();
-		for(int i = 0; i< 10; i++){
-			System.out.println(year06[i].toString());}
+		for(int i = 0; i< 20; i++){
+			System.out.println(year[i].toString());}
 		System.out.println(year07[0].toString());
 		for(int i = 0; i < days.length; i++){
 			for(int j = 1; j <= days[i]; j++){
@@ -114,17 +106,7 @@ public class Control {
    
 	public static void sortLocation(){
 
-		MSD.sort(year06);
-		MSD.sort(year07);
-		MSD.sort(year09);
-		MSD.sort(year10);
-		MSD.sort(year11);
-		MSD.sort(year12);
-		MSD.sort(year13);
-		MSD.sort(year13);
-		MSD.sort(year14);
-		MSD.sort(year15);
-		
+		MSD.sort(year);	
     }
 	
 	public static void Extraction() {
@@ -138,5 +120,37 @@ public class Control {
 		year13 = Extraction.readData(2013, 59983);
 		year14 = Extraction.readData(2014, 59315);
 		year15 = Extraction.readData(2015, 52955);
+
+		
+		for (int i=0; i<56400; i++) {
+			year[i] = year06[i];
+		}
+		for (int i=0; i<59010; i++) {
+			year[56400+i] = year07[i];
+		}
+		for (int i=0; i<71189; i++) {
+			year[115410+i] = year08[i];
+		}
+		for (int i=0; i<57398; i++) {
+			year[186599+i] = year09[i];
+		}
+		for (int i=0; i<62804; i++) {
+			year[243997+i] = year10[i];
+		}
+		for (int i=0; i<79091; i++) {
+			year[306801+i] = year11[i];
+		}
+		for (int i=0; i<64503; i++) {
+			year[385892+i] = year12[i];
+		}
+		for (int i=0; i<59983; i++) {
+			year[450395+i] = year13[i];
+		}
+		for (int i=0; i<59315; i++) {
+			year[510378+i] = year14[i];
+		}
+		for (int i=0; i<52955; i++) {
+			year[569693+i] = year15[i];
+		}
 	}
 }
