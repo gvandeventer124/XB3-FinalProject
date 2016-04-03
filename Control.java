@@ -43,7 +43,7 @@ public class Control {
 					String line = s.nextLine();
 					String[] brokenline = line.split(",");
 					if(brokenline[8].compareToIgnoreCase('"'+state+'"') == 0){
-						return "valid input "+state;
+						return state;
 						
 					}
 				}
@@ -71,7 +71,7 @@ public class Control {
 					String line = s.nextLine();
 					String[] brokenline = line.split(",");
 					if(brokenline[15].compareToIgnoreCase('"'+city+'"') == 0){
-						return "valid input "+city;
+						return city;
 						//System.out.println(brokenline[15]);
 					}
 				}
@@ -218,8 +218,13 @@ public static WeatherEvent[] get(WeatherEvent[] array, String countyname, String
 		}
 		forward++;
 	}
-
-	return (WeatherEvent[]) (matches.toArray());
+	WeatherEvent[] relevant = new WeatherEvent[matches.size()];
+	int i = 0;
+	for(WeatherEvent a : matches){
+		relevant[i] = a;
+		i++;
+	}
+	return relevant;
 }
 
 private static int binarySearch(WeatherEvent[] array, String county) {
@@ -228,18 +233,22 @@ private static int binarySearch(WeatherEvent[] array, String county) {
 	int check = array.length / 2;
 	int divisions = 2;
 	int looks = 0;
-
+	//System.out.println(county);
 	while (!end) {//basic binary-search algorithm
 		WeatherEvent current = array[check];
+		System.out.println(check + " " + array[check].getCounty() + " " + county);
 		if (current.getCounty().equals(county)) {
 			index = check;
+			System.out.println();
 			end = true;
-		} else if (greater(current, county)) {
-			divisions *= 2;
-			check += array.length / divisions;
-		} else {//for less than or 'contains'
+		} else if (current.getCounty().compareToIgnoreCase(county) > 0) {
+			//System.out.println("Greater");
 			divisions *= 2;
 			check -= array.length / divisions;
+		} else {//for less than or 'contains'
+			//System.out.println("Less");
+			divisions *= 2;
+			check += array.length / divisions;
 		}
 		looks++;
 		if (looks > Math.ceil(Math.log(1 << array.length) / Math.log(2)) + 5)
@@ -261,6 +270,7 @@ private static boolean greater(WeatherEvent event1, String c2) {//greater rather
 
 	int index = 0;
 	while (index < shortest) {//compares alphabetically
+		//System.out.println(c1.charAt(index) + " " + c2.charAt(index));
 		if (c1.charAt(index) < c2.charAt(index))
 			return false;//returns false if less
 		index++;
