@@ -32,12 +32,12 @@ public class eventCalc{
 					count ++;
 				}
 			}
-			double likely = (count*100.0/N);
+			double likely = (count*100.0/TOTAL);
 			likely = Math.round(likely * 1000.)/1000.;
 			System.out.println("chance of " +uniqueElements[i] + " = " + likely + "% ");
 		}
 		
-		double likely = (TOTAL - n)*100.0/N;
+		double likely = (TOTAL - n)*100.0/TOTAL;
 		likely = Math.round(likely * 1000.)/1000.;
 		System.out.println("chance of a clear day = " + likely + "% ");
 		
