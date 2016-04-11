@@ -1,0 +1,38 @@
+
+// this sorting algorithm follows closely to the one found in algorithm textbook.
+public class QuickSort { 
+	public void sort(WeatherEvent[] a) { // here the whole array of weather event is taken as input
+		sort(a, 0, a.length - 1); // it is sent to next sort to sort it recursively.
+	}
+
+	public void sort(WeatherEvent[] a, int lo, int hi) { // the method sort takes weather event as inout
+		if (hi <= lo) // hi would equal low when there are no variables
+			return;
+		int j = partition(a, lo, hi); // the whole thing is sent to function partition
+		sort(a, lo, j - 1); // the first half is sorted recursively 
+		sort(a, j + 1, hi); // the second half is sorted recursively 
+	}
+
+	public int partition(WeatherEvent[] a, int lo, int hi) {
+		int i = lo, j = hi + 1; // the position of first variable and the last is assigned to i and j respectively
+		WeatherEvent k = a[lo]; // the firt variable is assigned to the weather event variable k
+		while (true) {
+			while (a[++i].compareDate(k) < 0) // here it compares if the first variable is greater than or less than k.. it it is greater it will return (-1)
+				if (i == hi) // it breaks out of the while loop if i == hi 
+					break;
+			while (a[--j].compareDate(k) > 0) // here it compares if the last variable is greater than or less than k.. it it is greater it will return (1)
+				if (j == lo) // it breaks out of the while loop if j == lo;
+					break;
+			if (i >= j)
+				break; // it breaks out of the loop if i is greater than or equal to j
+			WeatherEvent temp = a[i]; // creating a temp variable and assigning a[i] to it
+			a[i] = a[j];  // exchanging a[i] value for a[j]
+			a[j] = temp; // setting value of a[j] to previous value to a[i]
+		}
+		
+		WeatherEvent t = a[lo]; // creating a temp variable and assigning a[lo] to it
+		a[lo] = a[j];// exchanging a[lo] value for a[j]
+		a[j] = t; // setting value of a[j] to previous value to a[lo]
+		return j; // j is returned by the function
+	}
+}
